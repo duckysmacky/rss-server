@@ -1,9 +1,18 @@
 package routers
 
-import "github.com/go-chi/chi"
+import (
+	"github.com/duckysmacky/rss-server/internal/handlers"
+	"github.com/go-chi/chi"
+	chimiddleware "github.com/go-chi/chi/middleware"
+)
 
 func NewRouter() *chi.Mux {
-	var mux = chi.NewMux()
+	var router = chi.NewMux()
+	router.Use(chimiddleware.StripSlashes)
 
-	return mux
+	router.Route("/api", func(api chi.Router) {
+		api.HandleFunc("/status", handlers.ResponseStatus)
+	})
+
+	return router
 }

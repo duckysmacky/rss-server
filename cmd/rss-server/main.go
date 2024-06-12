@@ -2,10 +2,9 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/duckysmacky/rss-server/internal/routers"
+	"github.com/duckysmacky/rss-server/internal/server"
 	"github.com/joho/godotenv"
 )
 
@@ -16,11 +15,7 @@ func main() {
 	}
 
 	var port = os.Getenv("PORT")
-
-	var server = http.Server {
-		Handler: routers.NewRouter(),
-		Addr: "localhost:" + port,
-	}
+	var server = server.NewServer("localhost", port)
 
 	log.Printf("Server starting on port %v", port)
 	if err := server.ListenAndServe(); err != nil {
