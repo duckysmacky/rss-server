@@ -4,10 +4,14 @@ import (
 	"net/http"
 )
 
-func ResponseBadRequest(w http.ResponseWriter, r *http.Request) {
-	respondWithError(w, http.StatusBadRequest, "Bad request", "Something went wrong!")
+func ResponseStatus(w http.ResponseWriter, r *http.Request) {
+	respondWithStatus(w)
 }
 
-func ConfirmStatus(w http.ResponseWriter, r *http.Request) {
-	respondWithStatus(w)
+func ResponseBadRequest(w http.ResponseWriter, r *http.Request) {
+	RespondWithError(w, http.StatusBadRequest, "Bad request", "Something went wrong!")
+}
+
+func ResponseCreated(w http.ResponseWriter, r *http.Request) {
+	RespondWithCode(w, http.StatusCreated, "Success")
 }
