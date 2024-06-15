@@ -2,22 +2,15 @@ package main
 
 import (
 	"log"
-	"os"
 
-	"github.com/duckysmacky/rss-server/internal/server"
-	"github.com/joho/godotenv"
+	"github.com/duckysmacky/rss-server/internal/handlers"
 )
 
 func main() {
-	// load .env
-	if err := godotenv.Load(); err != nil {
-	  log.Fatal("Error loading .env file")
-	}
+	var port = 8080
+	var server = handlers.NewServer("localhost", port)
 
-	var port = os.Getenv("PORT")
-	var server = server.NewServer("localhost", port)
-
-	log.Printf("Server starting on port %v", port)
+	log.Printf("Server listening on port %v", port)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
