@@ -7,11 +7,11 @@ import (
 	"github.com/duckysmacky/rss-server/internal/db"
 )
 
-type Database struct {
+type DatabaseConfig struct {
 	Queries *db.Queries
 }
 
-var database Database
+var database DatabaseConfig
 
 func ConnectDatabase(address string) {
 	var conn, err = sql.Open("postgres", address)
@@ -21,7 +21,7 @@ func ConnectDatabase(address string) {
 
 	var queries = db.New(conn)
 
-	database = Database {
+	database = DatabaseConfig {
 		Queries: queries,
 	}
 }

@@ -15,7 +15,7 @@ type newUser struct {
 	Username string `json:"username"`
 }
 
-func (database Database) handleCreateUser(w http.ResponseWriter, r *http.Request) {
+func (d DatabaseConfig) handleCreateUser(w http.ResponseWriter, r *http.Request) {
 	var decoder = json.NewDecoder(r.Body)
 	var userData = newUser {}
 
@@ -24,10 +24,10 @@ func (database Database) handleCreateUser(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	var user, err = database.Queries.CreateUser(r.Context(), db.CreateUserParams{
+	var user, err = d.Queries.CreateUser(r.Context(), db.CreateUserParams{
 		ID: uuid.New(),
-		Createtime: time.Now(),
-		Updatetime: time.Now(),
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
 		Username: userData.Username,
 	})
 	if err != nil {
@@ -35,4 +35,20 @@ func (database Database) handleCreateUser(w http.ResponseWriter, r *http.Request
 	}
 
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatUserJSON(user))
+}
+
+func (d DatabaseConfig) handleGetUserByAPIKey(w http.ResponseWriter, r *http.Request) {
+	key, err := getAPIKey(r.Header)
+	if err != nil {
+		api.RespondWithError(w, http.StatusForbidden, "Forbidden", fmt.Sprintf("An error occured while trying to authenticate: %v", err))
+		return
+	}
+
+	user, err := d.Queries.GetUserByAPIKey(r.Context(), key)
+	if err != nil {
+		api.RespondWithError(w, http.StatusNotFound, "Not found", fmt.Sprintf("An error occured while trying to get user by the api key: %v", err))
+		return
+	}
+
+	api.RespondWithJSON(w, http.StatusOK, api.FormatUserJSON(user))
 }

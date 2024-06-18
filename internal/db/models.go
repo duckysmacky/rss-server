@@ -12,7 +12,8 @@ import (
 
 type User struct {
 	ID         uuid.UUID
-	Createtime time.Time
-	Updatetime time.Time
+	CreateTime time.Time
+	UpdateTime time.Time
 	Username   string
+	ApiKey     string
 }

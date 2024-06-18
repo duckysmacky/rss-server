@@ -9,16 +9,18 @@ import (
 
 type User struct {
 	ID         uuid.UUID `json:"id"`
-	Createtime time.Time `json:"createTime"`
-	Updatetime time.Time `json:"updateTime"`
+	CreateTime time.Time `json:"createTime"`
+	UpdateTime time.Time `json:"updateTime"`
 	Username   string `json:"username"`
+	APIKey string `json:"apiKey"`
 }
 
 func FormatUserJSON(u db.User) User {
 	return User {
 		ID: u.ID,
-		Createtime: u.Createtime,
-		Updatetime: u.Updatetime,
+		CreateTime: u.CreateTime,
+		UpdateTime: u.UpdateTime,
 		Username: u.Username,
+		APIKey: u.ApiKey,
 	}
 }

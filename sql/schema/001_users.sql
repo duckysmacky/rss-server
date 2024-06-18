@@ -2,8 +2,8 @@
 
 CREATE TABLE users (
     id UUID PRIMARY KEY,
-    createTime TIMESTAMP NOT NULL,
-    updateTime TIMESTAMP NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
     username TEXT NOT NULL
 );
 
