@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -20,18 +19,18 @@ func (d DatabaseConfig) handleCreateUser(w http.ResponseWriter, r *http.Request)
 	var userData = newUser {}
 
 	if err := decoder.Decode(&userData); err != nil {
-		api.RespondWithError(w, http.StatusBadRequest, "Bad Request", fmt.Sprintf("An error occured while trying to parse JSON: %v", err))
+		api.RespondWithError(w, http.StatusBadRequest, "An error occured while trying to parse JSON", err)
 		return
 	}
 
-	var user, err = d.Queries.CreateUser(r.Context(), db.CreateUserParams{
+	user, err := d.Queries.CreateUser(r.Context(), db.CreateUserParams{
 		ID: uuid.New(),
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 		Username: userData.Username,
 	})
 	if err != nil {
-		api.RespondWithError(w, http.StatusInternalServerError, "Internal Server Error", fmt.Sprintf("An error occured while trying to create user: %v", err))
+		api.RespondWithError(w, http.StatusInternalServerError, "An error occured while trying to create user", err)
 	}
 
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatUserJSON(user))
@@ -40,13 +39,13 @@ func (d DatabaseConfig) handleCreateUser(w http.ResponseWriter, r *http.Request)
 func (d DatabaseConfig) handleGetUserByAPIKey(w http.ResponseWriter, r *http.Request) {
 	key, err := getAPIKey(r.Header)
 	if err != nil {
-		api.RespondWithError(w, http.StatusForbidden, "Forbidden", fmt.Sprintf("An error occured while trying to authenticate: %v", err))
+		api.RespondWithError(w, http.StatusForbidden, "An error occured while trying to authenticate", err)
 		return
 	}
 
 	user, err := d.Queries.GetUserByAPIKey(r.Context(), key)
 	if err != nil {
-		api.RespondWithError(w, http.StatusNotFound, "Not found", fmt.Sprintf("An error occured while trying to get user by the api key: %v", err))
+		api.RespondWithError(w, http.StatusNotFound, "An error occured while trying to get user", err)
 		return
 	}
 

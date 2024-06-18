@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 )
 
@@ -9,7 +10,7 @@ func ResponseStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func ResponseBadRequest(w http.ResponseWriter, r *http.Request) {
-	RespondWithError(w, http.StatusBadRequest, "Bad request", "Something went wrong!")
+	RespondWithError(w, http.StatusBadRequest, "Bad request", errors.New("something went wrong"))
 }
 
 func ResponseCreated(w http.ResponseWriter, r *http.Request) {

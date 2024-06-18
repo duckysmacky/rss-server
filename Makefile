@@ -4,3 +4,6 @@ build:
 
 run: build
 	@./server
+
+clean:
+	@rm ./server.exe

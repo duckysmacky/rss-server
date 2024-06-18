@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -11,8 +12,8 @@ type statusResponse struct {
 }
 
 type errorResponse struct {
-	Error string `json:"error"`
 	Message string `json:"message"`
+	Error string `json:"error"`
 }
 
 type codeResponse struct {
@@ -28,10 +29,10 @@ func respondWithStatus(w http.ResponseWriter) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func RespondWithError(w http.ResponseWriter, code int, err string, message string) {
-	var response = errorResponse {err, message}
+func RespondWithError(w http.ResponseWriter, code int, message string, err error) {
+	var response = errorResponse {message, fmt.Sprint(err)}
 	
-	log.Printf("Responding an error %v: %v\n", code, message)
+	log.Printf("Responding with an error (%v): %v\n", code, message)
 	
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
@@ -42,7 +43,7 @@ func RespondWithError(w http.ResponseWriter, code int, err string, message strin
 func RespondWithCode(w http.ResponseWriter, code int, message string) {
 	var response = codeResponse {message}
 
-	log.Printf("Responding with a code %v: %v\n", code, message)
+	log.Printf("Responding with a code (%v): %v\n", code, message)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
@@ -51,7 +52,7 @@ func RespondWithCode(w http.ResponseWriter, code int, message string) {
 }
 
 func RespondWithJSON(w http.ResponseWriter, code int, response interface{}) {
-	log.Printf("Responding with a code %v\n", code)
+	log.Printf("Responding with a JSON (%v)\n", code)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
