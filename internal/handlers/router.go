@@ -6,13 +6,13 @@ import (
 	chimiddleware "github.com/go-chi/chi/middleware"
 )
 
-func newRouter(db Database) *chi.Mux {
+func newRouter() *chi.Mux {
 	var router = chi.NewMux()
 	router.Use(chimiddleware.StripSlashes)
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", api.ResponseStatus)
-		r.Post("/user", db.handleCreateUser)
+		r.Post("/user", database.handleCreateUser)
 	})
 
 	return router

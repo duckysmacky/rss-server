@@ -12,9 +12,9 @@ import (
 
 func main() {
 	var port, dbAddr = getEnv()
-	var databse = handlers.NewDatabase(dbAddr)
-	
-	var server = handlers.NewServer("localhost", port, *databse)
+	handlers.ConnectDatabase(dbAddr)
+
+	var server = handlers.NewServer("localhost", port)
 	log.Printf("Server listening on port %v", port)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

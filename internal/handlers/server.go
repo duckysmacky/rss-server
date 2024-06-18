@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-func NewServer[T string | int](addr string, port T, database Database) *http.Server {
+func NewServer[T string | int](addr string, port T) *http.Server {
 	return &http.Server{
-		Handler: newRouter(database),
+		Handler: newRouter(),
 		Addr:    fmt.Sprintf("%v:%v", addr, port),
 	}
 }

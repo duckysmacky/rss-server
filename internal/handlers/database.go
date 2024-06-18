@@ -11,7 +11,9 @@ type Database struct {
 	Queries *db.Queries
 }
 
-func NewDatabase(address string) *Database {
+var database Database
+
+func ConnectDatabase(address string) {
 	var conn, err = sql.Open("postgres", address)
 	if err != nil {
 		log.Fatal(err)
@@ -19,7 +21,7 @@ func NewDatabase(address string) *Database {
 
 	var queries = db.New(conn)
 
-	return &Database {
+	database = Database {
 		Queries: queries,
 	}
 }
