@@ -8,14 +8,16 @@ import (
 )
 
 func newRouter() *chi.Mux {
+	var db = handlers.Database
 	var router = chi.NewMux()
 	router.Use(chimiddleware.StripSlashes)
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", api.ResponseStatus)
-		r.Get("/user", handlers.Database.AuthUser(handlers.Database.HandleGetUserByAPIKey))
+		r.Get("/user", db.AuthUser(db.HandleGetUserByAPIKey))
 
-		r.Post("/user", handlers.Database.HandleCreateUser)
+		r.Post("/user", db.HandleCreateUser)
+		r.Post("/feed", db.AuthUser(db.HandleCreateFeed))
 	})
 
 	return router

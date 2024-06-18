@@ -11,8 +11,17 @@ type User struct {
 	ID         uuid.UUID `json:"id"`
 	CreateTime time.Time `json:"createTime"`
 	UpdateTime time.Time `json:"updateTime"`
-	Username   string `json:"username"`
-	APIKey string `json:"apiKey"`
+	Username   string    `json:"username"`
+	APIKey     string    `json:"apiKey"`
+}
+
+type Feed struct {
+	ID         uuid.UUID `json:"id"`
+	CreateTime time.Time `json:"createTime"`
+	UpdateTime time.Time `json:"updateTime"`
+	Url        string    `json:"url"`
+	Name       string    `json:"name"`
+	UserID     uuid.UUID `json:"userId"`
 }
 
 func FormatUserJSON(u db.User) User {
@@ -22,5 +31,16 @@ func FormatUserJSON(u db.User) User {
 		UpdateTime: u.UpdateTime,
 		Username: u.Username,
 		APIKey: u.ApiKey,
+	}
+}
+
+func FormatFeedJSON(f db.Feed) Feed {
+	return Feed {
+		ID: f.ID,
+		CreateTime: f.CreateTime,
+		UpdateTime: f.UpdateTime,
+		Url: f.Url,
+		Name: f.Name,
+		UserID: f.UserID,
 	}
 }

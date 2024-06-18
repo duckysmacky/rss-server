@@ -1,6 +1,6 @@
 build:
 	@go build -o server.exe cmd/rss-server/main.go
-	@echo "Built server"
+	@echo Built server
 
 run: build
 	@./server

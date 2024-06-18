@@ -30,7 +30,8 @@ func (d DatabaseConfig) HandleCreateUser(w http.ResponseWriter, r *http.Request)
 		Username: userData.Username,
 	})
 	if err != nil {
-		api.RespondWithError(w, http.StatusInternalServerError, "An error occured while trying to create user", err)
+		api.RespondWithError(w, http.StatusInternalServerError, "An error occured while trying to create new user", err)
+		return
 	}
 
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatUserJSON(user))
