@@ -11,7 +11,7 @@ type DatabaseConfig struct {
 	Queries *db.Queries
 }
 
-var database DatabaseConfig
+var Database DatabaseConfig
 
 func ConnectDatabase(address string) {
 	var conn, err = sql.Open("postgres", address)
@@ -21,7 +21,7 @@ func ConnectDatabase(address string) {
 
 	var queries = db.New(conn)
 
-	database = DatabaseConfig {
+	Database = DatabaseConfig {
 		Queries: queries,
 	}
 }

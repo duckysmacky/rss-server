@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/duckysmacky/rss-server/internal/handlers"
+	"github.com/duckysmacky/rss-server/internal/server"
 	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq"
@@ -14,7 +15,7 @@ func main() {
 	var port, dbAddr = getEnv()
 	handlers.ConnectDatabase(dbAddr)
 
-	var server = handlers.NewServer("localhost", port)
+	var server = server.NewServer("localhost", port)
 	log.Printf("Server listening on port %v", port)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)

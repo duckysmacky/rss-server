@@ -14,7 +14,7 @@ type newUser struct {
 	Username string `json:"username"`
 }
 
-func (d DatabaseConfig) handleCreateUser(w http.ResponseWriter, r *http.Request) {
+func (d DatabaseConfig) HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 	var decoder = json.NewDecoder(r.Body)
 	var userData = newUser {}
 
@@ -36,18 +36,6 @@ func (d DatabaseConfig) handleCreateUser(w http.ResponseWriter, r *http.Request)
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatUserJSON(user))
 }
 
-func (d DatabaseConfig) handleGetUserByAPIKey(w http.ResponseWriter, r *http.Request) {
-	key, err := getAPIKey(r.Header)
-	if err != nil {
-		api.RespondWithError(w, http.StatusForbidden, "An error occured while trying to authenticate", err)
-		return
-	}
-
-	user, err := d.Queries.GetUserByAPIKey(r.Context(), key)
-	if err != nil {
-		api.RespondWithError(w, http.StatusNotFound, "An error occured while trying to get user", err)
-		return
-	}
-
+func (d DatabaseConfig) HandleGetUserByAPIKey(w http.ResponseWriter, r *http.Request, user db.User) {
 	api.RespondWithJSON(w, http.StatusOK, api.FormatUserJSON(user))
 }
