@@ -39,3 +39,12 @@ func (d DatabaseConfig) HandleCreateFeed(w http.ResponseWriter, r *http.Request,
 
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatFeedJSON(feed))
 }
+
+func (d DatabaseConfig) HandleGetFeeds(w http.ResponseWriter, r *http.Request) {
+	feeds, err := d.Queries.GetFeeds(r.Context())
+	if err != nil {
+		api.RespondWithError(w, http.StatusInternalServerError, "An error occured while trying to get feeds", err)
+	}
+
+	api.RespondWithJSON(w, http.StatusOK, api.FormatFeedsJSON(feeds))
+}

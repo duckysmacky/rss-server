@@ -44,3 +44,12 @@ func FormatFeedJSON(f db.Feed) Feed {
 		UserID: f.UserID,
 	}
 }
+
+func FormatFeedsJSON(f []db.Feed) []Feed {
+	var feeds = []Feed {}
+	for _, feed := range f {
+		feeds = append(feeds, FormatFeedJSON(feed))
+	}
+
+	return feeds
+}
