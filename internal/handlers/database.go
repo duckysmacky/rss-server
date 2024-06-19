@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
 
 	"github.com/duckysmacky/rss-server/internal/db"
 )
@@ -13,10 +12,10 @@ type DatabaseConfig struct {
 
 var Database DatabaseConfig
 
-func ConnectDatabase(address string) {
+func ConnectDatabase(address string) (*DatabaseConfig, error) {
 	var conn, err = sql.Open("postgres", address)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	var queries = db.New(conn)
@@ -24,4 +23,6 @@ func ConnectDatabase(address string) {
 	Database = DatabaseConfig {
 		Queries: queries,
 	}
+
+	return &Database, nil
 }

@@ -46,7 +46,8 @@ func (q *Queries) CreateFollow(ctx context.Context, arg CreateFollowParams) (Fol
 }
 
 const deleteFollow = `-- name: DeleteFollow :exec
-DELETE FROM "follows" WHERE user_id = $1 AND id = $2
+DELETE FROM "follows"
+WHERE user_id = $1 AND id = $2
 `
 
 type DeleteFollowParams struct {
@@ -60,7 +61,8 @@ func (q *Queries) DeleteFollow(ctx context.Context, arg DeleteFollowParams) erro
 }
 
 const getFollows = `-- name: GetFollows :many
-SELECT id, create_time, update_time, user_id, feed_id FROM "follows" WHERE user_id = $1
+SELECT id, create_time, update_time, user_id, feed_id FROM "follows"
+WHERE user_id = $1
 `
 
 func (q *Queries) GetFollows(ctx context.Context, userID uuid.UUID) ([]Follow, error) {

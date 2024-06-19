@@ -4,7 +4,9 @@ VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
 -- name: GetFollows :many
-SELECT * FROM "follows" WHERE user_id = $1;
+SELECT * FROM "follows"
+WHERE user_id = $1;
 
 -- name: DeleteFollow :exec
-DELETE FROM "follows" WHERE user_id = $1 AND id = $2;
+DELETE FROM "follows"
+WHERE user_id = $1 AND id = $2;
