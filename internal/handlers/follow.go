@@ -37,3 +37,12 @@ func (d DatabaseConfig) HandleFollowFeed(w http.ResponseWriter, r *http.Request,
 
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatFollowJSON(follow))
 }
+
+func (d DatabaseConfig) HandleGetUserFollows(w http.ResponseWriter, r *http.Request, user db.User) {
+	follows, err := d.Queries.GetUserFollows(r.Context(), user.ID)
+	if err != nil {
+		api.RespondWithError(w, http.StatusNotFound, "An error occured while trying to get user's follows", err)
+	}
+
+	api.RespondWithJSON(w, http.StatusCreated, api.FormatFollowsJSON(follows))
+}

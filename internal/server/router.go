@@ -16,6 +16,7 @@ func newRouter() *chi.Mux {
 		r.Get("/status", api.ResponseStatus)
 		r.Get("/user", db.AuthUser(db.HandleGetUserByAPIKey))
 		r.Get("/feeds", db.HandleGetFeeds)
+		r.Get("/follows", db.AuthUser(db.HandleGetUserFollows))
 
 		r.Post("/user", db.HandleCreateUser)
 		r.Post("/feed", db.AuthUser(db.HandleCreateFeed))

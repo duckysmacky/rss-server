@@ -71,3 +71,12 @@ func FormatFollowJSON(f db.Follow) Follow {
 		FeedID: f.FeedID,
 	}
 }
+
+func FormatFollowsJSON(f []db.Follow) []Follow {
+	var follows = []Follow {}
+	for _, follow := range f {
+		follows = append(follows, FormatFollowJSON(follow))
+	}
+
+	return follows
+}
