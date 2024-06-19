@@ -23,7 +23,7 @@ type RSSFeed struct {
 		Generator     string `xml:"generator"`
 		Language      string `xml:"language"`
 		LastBuildDate string `xml:"lastBuildDate"`
-		Item          []Item `xml:"item"`
+		Items         []Item `xml:"item"`
 	} `xml:"channel"`
 }
 

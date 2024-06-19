@@ -32,6 +32,17 @@ type Follow struct {
 	FeedID     uuid.UUID `json:"feedId"`
 }
 
+type Post struct {
+	ID          uuid.UUID `json:"id"`
+	CreateTime  time.Time `json:"createTime"`
+	UpdateTime  time.Time `json:"updateTime"`
+	PublishDate time.Time `json:"publishDate"`
+	Url         string	  `json:"url"`
+	FeedID      uuid.UUID `json:"feedId"`
+	Title       string 	  `json:"title"`
+	Description *string   `json:"description"`
+}
+
 func FormatUserJSON(u db.User) User {
 	return User {
 		ID: u.ID,
@@ -79,4 +90,31 @@ func FormatFollowsJSON(f []db.Follow) []Follow {
 	}
 
 	return follows
+}
+
+func FormatPostJSON(p db.Post) Post {
+	var description *string
+	if p.Description.Valid {
+		description = &p.Description.String
+	}
+
+	return Post {
+		ID: p.ID,
+		CreateTime: p.CreateTime,
+		UpdateTime: p.UpdateTime,
+		PublishDate: p.PublishDate,
+		Url: p.Url,
+		FeedID: p.FeedID,
+		Title: p.Title,
+		Description: description,
+	}
+}
+
+func FormatPostsJSON(p []db.Post) []Post {
+	var posts = []Post {}
+	for _, post := range p {
+		posts = append(posts, FormatPostJSON(post))
+	}
+
+	return posts
 }

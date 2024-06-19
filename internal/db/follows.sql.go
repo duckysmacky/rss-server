@@ -13,7 +13,7 @@ import (
 )
 
 const createFollow = `-- name: CreateFollow :one
-INSERT INTO "follows" (id, create_time, update_time, user_id, feed_id)
+INSERT INTO follows (id, create_time, update_time, user_id, feed_id)
 VALUES ($1, $2, $3, $4, $5)
 RETURNING id, create_time, update_time, user_id, feed_id
 `
@@ -46,7 +46,7 @@ func (q *Queries) CreateFollow(ctx context.Context, arg CreateFollowParams) (Fol
 }
 
 const deleteFollow = `-- name: DeleteFollow :exec
-DELETE FROM "follows"
+DELETE FROM follows
 WHERE user_id = $1 AND id = $2
 `
 
@@ -61,7 +61,7 @@ func (q *Queries) DeleteFollow(ctx context.Context, arg DeleteFollowParams) erro
 }
 
 const getFollows = `-- name: GetFollows :many
-SELECT id, create_time, update_time, user_id, feed_id FROM "follows"
+SELECT id, create_time, update_time, user_id, feed_id FROM follows
 WHERE user_id = $1
 `
 

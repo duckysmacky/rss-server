@@ -2,11 +2,14 @@ package rss
 
 import (
 	"context"
+	"database/sql"
 	"log"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/duckysmacky/rss-server/internal/db"
+	"github.com/google/uuid"
 )
 
 func StartScraper(queries db.Queries, feeds int, interval time.Duration) {
@@ -46,8 +49,34 @@ func fetchFeed(wg *sync.WaitGroup, queries db.Queries, feed db.Feed) {
 		log.Println("Error parsing a RSS feed: ", err)
 	}
 
-	// for _, item := range rssFeed.Channel.Item {
-	// 	log.Println("Found a post: ", item.Title)
-	// }
-	log.Printf("Found %v posts on feed %s", len(rssFeed.Channel.Item), feed.Name)
+	for _, item := range rssFeed.Channel.Items {
+		publishDate, err := time.Parse(time.RFC1123Z, item.PubDate)
+		if err != nil {
+			log.Printf("Error parsing date %v to Timestamp: %v", item.PubDate, err)
+		}
+
+		var description = sql.NullString {
+			String: item.Description,
+			Valid: item.Description != "",
+		}
+
+		_, err = queries.CreatePost(context.Background(), db.CreatePostParams {
+			ID: uuid.New(),
+			CreateTime: time.Now(),
+			UpdateTime: time.Now(),
+			PublishDate: publishDate,
+			Url: item.Link,
+			FeedID: feed.ID,
+			Title: item.Title,
+			Description: description,
+		})
+		if err != nil {
+			// TODO - check via db request for already existing
+			if strings.Contains(err.Error(), "duplicate key") {
+				continue
+			}
+			log.Println("Error creating a new post: ", err)
+		}
+	}
+	log.Printf("Found %v posts on feed \"%s\"", len(rssFeed.Channel.Items), feed.Name)
 }
