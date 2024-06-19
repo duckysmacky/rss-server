@@ -19,7 +19,7 @@ func (d DatabaseConfig) AuthUser(handler authHandler) http.HandlerFunc {
 			return
 		}
 	
-		user, err := d.Queries.GetUserByAPIKey(r.Context(), key)
+		user, err := d.Queries.GetUser(r.Context(), key)
 		if err != nil {
 			api.RespondWithError(w, http.StatusNotFound, "An error occured while trying to get user", err)
 			return

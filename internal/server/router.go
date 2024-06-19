@@ -14,13 +14,15 @@ func newRouter() *chi.Mux {
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", api.ResponseStatus)
-		r.Get("/user", db.AuthUser(db.HandleGetUserByAPIKey))
+		r.Get("/user", db.AuthUser(db.HandleGetUser))
 		r.Get("/feeds", db.HandleGetFeeds)
-		r.Get("/follows", db.AuthUser(db.HandleGetUserFollows))
+		r.Get("/follows", db.AuthUser(db.HandleGetFollows))
 
 		r.Post("/user", db.HandleCreateUser)
 		r.Post("/feed", db.AuthUser(db.HandleCreateFeed))
-		r.Post("/follow", db.AuthUser(db.HandleFollowFeed))
+		r.Post("/follows", db.AuthUser(db.HandleFollowFeed))
+
+		r.Delete("/follows/{followId}", db.AuthUser(db.HandleDeleteFollow))
 	})
 
 	return router

@@ -45,12 +45,26 @@ func (q *Queries) CreateFollow(ctx context.Context, arg CreateFollowParams) (Fol
 	return i, err
 }
 
-const getUserFollows = `-- name: GetUserFollows :many
+const deleteFollow = `-- name: DeleteFollow :exec
+DELETE FROM "follows" WHERE user_id = $1 AND id = $2
+`
+
+type DeleteFollowParams struct {
+	UserID uuid.UUID
+	ID     uuid.UUID
+}
+
+func (q *Queries) DeleteFollow(ctx context.Context, arg DeleteFollowParams) error {
+	_, err := q.db.ExecContext(ctx, deleteFollow, arg.UserID, arg.ID)
+	return err
+}
+
+const getFollows = `-- name: GetFollows :many
 SELECT id, create_time, update_time, user_id, feed_id FROM "follows" WHERE user_id = $1
 `
 
-func (q *Queries) GetUserFollows(ctx context.Context, userID uuid.UUID) ([]Follow, error) {
-	rows, err := q.db.QueryContext(ctx, getUserFollows, userID)
+func (q *Queries) GetFollows(ctx context.Context, userID uuid.UUID) ([]Follow, error) {
+	rows, err := q.db.QueryContext(ctx, getFollows, userID)
 	if err != nil {
 		return nil, err
 	}

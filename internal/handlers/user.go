@@ -37,6 +37,6 @@ func (d DatabaseConfig) HandleCreateUser(w http.ResponseWriter, r *http.Request)
 	api.RespondWithJSON(w, http.StatusCreated, api.FormatUserJSON(user))
 }
 
-func (d DatabaseConfig) HandleGetUserByAPIKey(w http.ResponseWriter, r *http.Request, user db.User) {
+func (d DatabaseConfig) HandleGetUser(w http.ResponseWriter, r *http.Request, user db.User) {
 	api.RespondWithJSON(w, http.StatusOK, api.FormatUserJSON(user))
 }
