@@ -19,6 +19,7 @@ func newRouter() *chi.Mux {
 
 		r.Post("/user", db.HandleCreateUser)
 		r.Post("/feed", db.AuthUser(db.HandleCreateFeed))
+		r.Post("/follow", db.AuthUser(db.HandleFollowFeed))
 	})
 
 	return router
